@@ -1,5 +1,7 @@
 # **Traffic Sign Recognition** 
 
+This project is part of Udacity's self driving car degree.
+
 ## Writeup
 
 
