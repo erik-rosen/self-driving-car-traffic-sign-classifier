@@ -24,8 +24,6 @@ All code written for in this project can be found in: Traffic_Sign_Classifier.ip
 
 ### Data Set Summary & Exploration
 
-#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
-
 I used the numpy library to calculate summary statistics of the traffic
 signs data set:
 
@@ -51,8 +49,6 @@ Visualizing some sample images of the training set below tells us that we will n
 
 ### Design and Test a Model Architecture
 
-#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
-
 As a first step, to ensure that there is class balance in the traning data, I generated additional synthetic data to ensure that each class in the training dataset had 2500 images. I did this by sampling from the existing images within each class, and applying a random rotation between -20 and 20 degrees, applying random translation between -2 to +2 pixels in the vertical and horizontal directions, as well as applying random shadow polygons to simulate variations in local lighting (using the Automold library: https://github.com/UjjwalSaxena/Automold--Road-Augmentation-Library).
 
 See below for some example synthetic images:
@@ -68,8 +64,6 @@ As a pre-processing step, convert from RGB to YUV color space, and then take the
 ![alt text][image5]
 
 This ensures that the mean and variance of pixels within any given patch of in the image (the size of this patch is determined by the parameter values used) is approximately zero mean and of unit variance respectively.
-
-#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 I implemented the architecture described in this paper: http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf, which contsists of the following layers:
 
@@ -87,14 +81,8 @@ I implemented the architecture described in this paper: http://yann.lecun.com/ex
 | Fully connected		| Input: flattened output from both max pooling sections, output: 43x1|
 | Softmax				|         									                          |
 
- 
-
-
-#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 To train the model, I used tensorflow's tf.train.AdamOptimizer and defined the cost function to be the cross entropy and set the EPOCHS to 10 and BATCH_SIZE to 32. I reduce the learning rate by 2/3rds if there is no improvement in the accuracy between epochs to ensure that there is convergence in the optimization. I could probably reduce the number of epochs used as validation accuracy does not increase much past the first few epochs and could lead to overfitting given that there is no regularization / dropout implemented in the model.
-
-#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 At first, applied the LeNet architecture with gave me 94% accuracy with the described preprocessing steps above. To improve that further, I chose to implement one of the top performing architectures for the traffic sign dataset described here: http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf. The architecture is relatively simple with 2 convolution layers, and uses a feed forward technique that feeds the output of the initial convolution stage to the final, fully connected layer. Quoting the paper: "This allows the classifier to use, not just high-level features, which tend to be global, invariant, but with little precise details, but also lowlevel features, which tend to be more local, less invariant, and more accurately encode local motifs."
 
@@ -157,7 +145,7 @@ While performance is generally pretty good, the model does not perform very well
 * Beware of ice/snow
 * Double curve
 
-For both of these images, the recall is is low, i.e. the classifier does erroneously mistakes these classes for something else - in 56% of cases when a Beware of ice/snow sign is shown, the classifier will predict that it is something else. In 68% of cases, when a double curve is shown, the classifier will predict something else. 
+For both of these images, the recall is low, i.e. the classifier erroneously mistakes these classes for something else - in 56% of cases when a Beware of ice/snow sign is shown, the classifier will predict that it is something else. In 68% of cases, when a double curve is shown, the classifier will predict something else. 
 
 Looking at the confusion matrix, we see that the classifier most often confuses the "Beware of ice/snow"-sign with "Bicycles crossing" (14.6% of cases) or "Right-of-way at the next intersection" (12% of cases), where as when the "Double curve" sign is shown it is commonly misclassified as a "General caution" sign (32% of cases).
 
@@ -179,9 +167,7 @@ In the case for the double curve sign misclassification, we note that the double
 As with the "Beware of ice and snow case", it might be possible to improve recall for "Double Curve" by reducing the downsampling by removing the pooling (at the expense of increasing the amount of weights to train / size of the model). This would allow the network to pick up more of the finer details in the central motifs (such as the bend in the double curve).
  
 
-### Test a Model on New Images
-
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+### Testing the Model on New Images
 
 Here are ten German traffic signs that I found on the web:
 
@@ -189,15 +175,13 @@ Here are ten German traffic signs that I found on the web:
 
 These are images with very low noise, so I expect very good performance.
 
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Model predictions 
 
 Here are the results of the predictions alongside with the softmax probabilities:
 
 ![alt text][image14] 
 
 The accuracy of these 10 predictions is 100%, compared to 96.4% on the test set
-
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 17th cell of the Ipython notebook.
 
