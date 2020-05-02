@@ -1,6 +1,8 @@
 # **Traffic Sign Recognition** 
 
-This project is part of Udacity's self driving car degree.
+This project aims to build a traffic sign classifier using convolutional neural net. The project is a part of Udacity's self driving car degree. In the project I achieved an F1 score of .964 on the Test set, consisting of images like the below:
+
+![alt text][image2]
 
 ## Writeup
 
